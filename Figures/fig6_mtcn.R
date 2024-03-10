@@ -245,7 +245,7 @@ colon_type_mut <- df %>%
   mutate(across(n,~replace(.,is.na(.),0)), across(sumVAF,~replace(.,is.na(.),0)), across(maxVAF, ~replace(.,is.na(.),0)))
 
 
-# 평균 sum VAF
+# average sum VAF
 colon_type_mut %>% 
   group_by(project,patient,age,type) %>%
   summarise(mean_sumvaf=mean(sumVAF), sd_sumvaf=sd(sumVAF),n=n()) %>% 
@@ -376,7 +376,7 @@ cor.test(mtcn_df_diploid_purity$purity, mtcn_df_diploid_purity$mtCN)  # pval = 0
 lm_fit <- lm(mtCN~purity, data=mtcn_df_diploid_purity)
 summary(lm_fit)  
 
-# =mtcn = 211.7 + 1053.9*purity
+# mtcn = 211.7 + 1053.9*purity
 # purity=1; mtcn = 1265.6
 
 
