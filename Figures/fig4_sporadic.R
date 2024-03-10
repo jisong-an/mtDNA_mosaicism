@@ -162,7 +162,7 @@ hc10_vaf_comp <- df %>% filter(patient=="HC10") %>%
 
 ## graph
 
-# tree 확대
+# tree
 tree <- read.tree("~/project/11_Clone_MT/12_Heatmap/02_DB/DB8_Lineage_count_table.txt.nwk")
 ggtree(tree)  + geom_rootedge(1) + theme_tree2() + coord_cartesian(xlim=c(0,20))
 ggtree(tree)  + geom_rootedge(1) + theme_tree2() + coord_cartesian(xlim=c(1000,10000))
@@ -178,7 +178,6 @@ pushViewport(viewport(x=0, y=0, width=1, height=1, just=c('left','bottom')))
 
 # to determine the column order of heatmap (sample)
 sample_order <- fortify(tree) %>% merge(meta_dt %>% dplyr::rename("label"=lineage_id), by=c("label"), all.x = TRUE) %>% as_tibble() %>% filter(!is.na(sample_id)) %>% arrange(y) %>% pull(sample_id)
-
 
 pushViewport(viewport(x=0,y=0.35, height=0.15, just=c('left','bottom')))
 pushViewport(viewport(x=0.5, y=0.5, height=0.9, width=0.9))
