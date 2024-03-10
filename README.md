@@ -4,4 +4,4 @@ Jisong An, Chang Hyun Nam, Ryul Kim, Yunah Lee, Hyein Won, Seongyeol Park, Won H
 <br/>
 
 ## Contact information
-jisong0415@kaist.ac.kr
+If you have any questions, please feel free to contact me at jisong0415@kaist.ac.kr
