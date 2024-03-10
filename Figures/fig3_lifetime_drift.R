@@ -71,7 +71,7 @@ for (i in 1:length(pat_clone)){
 popViewport(3)
 
 
-# clone 수 [0.85-0.9]
+# clone count [0.85-0.9]
 pushViewport(viewport(x=0,y=0.85, height=0.05, just=c('left','bottom')))
 pushViewport(viewport(x=0.5, y=0.5, height=0.9, width=0.9))
 
