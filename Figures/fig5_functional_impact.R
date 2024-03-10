@@ -147,7 +147,7 @@ rna_count_hc17_trunc_ratio %>%
 
 
 
-### Fig6e. DNA & RNA VAF compare -----------------------------------
+### Fig5e. DNA & RNA VAF compare -----------------------------------
 
 rRNA_struc1 <- read_tsv("~/reference/MT/mtRNA/d.16.m.H.sapiens.5.bpseq_.txt", col_names = "info") %>% 
   mutate(region2="MT-RNR1")
