@@ -13,7 +13,6 @@ library(ggtree)
 library(RColorBrewer)
 library(grid)
 library(circlize)
-library(gggenes)
 
 
 ### Fig2c. DB2 16400 C>T  ---------------------------------------
@@ -77,8 +76,8 @@ for (i in 1:nrow(data_n)){
 popViewport(2)
 
 
-### Fig2d. HC19 7496 T>C ----------------------------------------------------
 
+### Fig2d. HC19 7496 T>C ----------------------------------------------------
 
 tree <- read.tree("~/project/11_Clone_MT/12_Heatmap/01_Line1/HC19.length.nwk")
 # to determine the column order of heatmap (sample)
@@ -271,7 +270,6 @@ popViewport(2)
 
 ### Fig2g. VAF in offspring (family bulk tissue) -----------------------------------
 
-
 df_family_merge_check_filt_all_mod_v2 %>% 
   filter(group!="mother_only") %>% 
   filter(patient!="ST304") %>% 
@@ -288,17 +286,3 @@ df_family_merge_check_filt_all_mod_v2 %>%
   coord_flip() + 
   scale_fill_manual(values=pal_simpsons()(10)[c(2,1)]) + 
   theme_classic()
-
-
-
-### Fig2h. VAF distribution between mother & offspring ----------------------------
-
-df_family_merge_check_filt_all_mod_v2 %>% 
-  filter(patient!="ST304") %>% 
-  rbind(df_family_merge_check_filt_all_mztwin %>% filter(patient=="ST304") %>% ungroup() %>% dplyr::slice(1:2)) %>% 
-  ggplot() + 
-  geom_point(aes(x=mother,y=VAF,col=group)) + 
-  theme_classic() + 
-  geom_abline(slope=1,intercept=0,col="lightgray") + 
-  xlim(0,100) + 
-  scale_color_manual(values=pal_simpsons()(10)[c(2,1,3)])
