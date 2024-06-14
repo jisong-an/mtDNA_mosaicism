@@ -1,1 +1,1 @@
-Script for making dataframe of variant set and variant classification using statistical probability
+This directory contains scripts for making data frame of variant sets and variant classification using statistical probability
