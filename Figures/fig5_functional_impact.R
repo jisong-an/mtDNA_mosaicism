@@ -48,7 +48,6 @@ obs_merge_consq_mod %>%
 
 
 
-
 ### Fig5b. VAF & consequence -----------------------------------------
 
 df %>% 
@@ -77,7 +76,6 @@ df %>%
   scale_fill_manual(values=c(brewer.pal("Blues",n=6)[6],brewer.pal("Oranges",n=6)[6],brewer.pal("Greens",n=6)[6])) + 
   scale_alpha_manual(values=c(0.1,0.3,0.5,0.7,1)) + 
   theme(strip.text.x = element_text(color="black"),panel.grid = element_blank(), legend.title = element_blank(), axis.text.x = element_text(angle=20))
-
 
 
 
@@ -113,7 +111,6 @@ rna_count_hc13_trunc_ratio %>%
 
 
 
-
 ### Fig5d. Truncating & TPM (HC17-01) -------------------------------
 
 # truncating - HC17-01
@@ -143,7 +140,6 @@ rna_count_hc17_trunc_ratio %>%
   geom_point(data=subset(rna_count_hc17_trunc_ratio, group=="missense in ND4"), aes(x=gene,y=log_FC), size=3.5, pch=18) + 
   scale_color_cosmic(palette="signature_substitutions") + 
   theme_classic() + coord_cartesian(ylim=c(-0.75,1.25))
-
 
 
 
@@ -225,7 +221,6 @@ df_rna_vaf %>% filter(vartype!="fe") %>% filter(vartype_2!="frequent_recurrent")
   theme(strip.text.x = element_text(color="black")) + 
   scale_color_jama()+
   coord_cartesian(xlim=c(0,100),ylim=c(0,100))
-
 
 
 
