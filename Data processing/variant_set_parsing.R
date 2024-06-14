@@ -22,12 +22,10 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
     file_line1 <- getAbsolutePath("/home/users/anjisong/project/11_Clone_MT/07_VarMat/01_Line1/Estcutoff/result_tier1_tier2/modify","*wogerm.tsv")
   
     for (f in file_line1) {
-      
       df_temp <- read_tsv(f) %>% rename("patient"=sample) %>% 
         gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
         select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
         filter(VAF>0)
-      
       df <- rbind(df,df_temp)
       
     }
@@ -38,14 +36,11 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
     file_db <- getAbsolutePath("/home/users/anjisong/project/11_Clone_MT/07_VarMat/02_DB/Estcutoff/result_tier1_tier2/modify","*wogerm.tsv")
   
     for (f in file_db) {
-      
       df_temp <- read_tsv(f) %>% rename("patient"=sample) %>% 
         gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
         select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
         filter(VAF>0)
-      
       df <- rbind(df,df_temp)
-      
     }
 
 
@@ -54,14 +49,11 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
     file_hblood <- getAbsolutePath("/home/users/anjisong/project/11_Clone_MT/07_VarMat/04_H.Blood/Estcutoff/result_tier1_tier2/modify","*wogerm.tsv")
   
     for (f in file_hblood) {
-      
       df_temp <- read_tsv(f) %>% rename("patient"=sample) %>% 
         gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
         select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
         filter(VAF>0)
-      
       df <- rbind(df,df_temp)
-      
     }
 
 
@@ -70,14 +62,11 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
     file_blood_new <- getAbsolutePath("/home/users/anjisong/project/11_Clone_MT/07_VarMat/09_blood_new/Estcutoff/result_tier1_tier2/modify","*wogerm.tsv")
     
     for (f in file_blood_new) {
-      
       df_temp <- read_tsv(f) %>% rename("patient"=sample) %>% 
         gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
         select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
         filter(VAF>0)
-      
       df <- rbind(df,df_temp)
-      
     }
   
 
@@ -88,7 +77,6 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
       gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
       select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
       filter(VAF>0)
-    
     df <- df %>% rbind(df_temp)
   
 
@@ -99,7 +87,6 @@ df <- tibble(project=character(), patient=character(), sample=character(), VAR=c
       gather(16:(ncol(.)-6),key="sample", value="VAF") %>% 
       select(project,patient, sample,VAR,POS,REF,ALT,Consequence,Gene,VAF) %>% 
       filter(VAF>0)
-    
     df <- df %>% rbind(df_temp)  
     
     
