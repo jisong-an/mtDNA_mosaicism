@@ -1,1 +1,2 @@
-This directory contains scripts for making data frame of variant sets and variant classification using statistical probability
+# Data processing
+This directory contains scripts for making data frames of variant sets and variant classification
