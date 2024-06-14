@@ -16,23 +16,7 @@ library(circlize)
 library(gggenes)
 
 
-### Fig1b. lineage-specific VAF barplot ----------------------------------------------------------
-
-cell2_blood_all %>% 
-  filter(lineage!="L3") %>% 
-  select(patient,lineage,medVAF) %>% 
-  unique() %>% 
-  ggplot() + 
-  geom_hline(yintercept=0.5,col="gray") + 
-  geom_bar(aes(x=patient,y=medVAF,fill=factor(lineage,levels=c("L2","L1"))),position=position_stack(),stat="identity") +
-  theme_classic() + 
-  scale_y_continuous(breaks=c(0,0.25,0.5)) + 
-  theme(axis.text.x=element_text(angle=90)) + 
-  scale_fill_manual(values=c(pal_nejm()(2)[c(2,1)])) + 
-  ylim(c(0,0.6))
-
-
-### Fig1c. mutational landscape -------------------------------------------------------------------
+### Fig1b. mutational landscape -------------------------------------------------------------------
 
 plot_vargraph <- function(temp_db, max, tree_list){
   
@@ -214,7 +198,7 @@ dev.off()
 
 
 
-### Fig1d. Circos --------------------------------------------------
+### Fig1c. Circos --------------------------------------------------
 
 draw_MT_circos_scale <- function(df){
   
@@ -340,7 +324,7 @@ draw_MT_circos_scale(df_sofe)
 
 
 
-### Fig1e. Signature -------------------------------------------------
+### Fig1d. Signature -------------------------------------------------
 
 df %>% 
   filter(type=="clonal_normal") %>% 
@@ -366,7 +350,7 @@ df %>%
 
 
 
-### Fig1f. strand-bias ------------------------------------------
+### Fig1e. strand-bias ------------------------------------------
 
 ## Count
 df_sig <- df  %>% filter(project %in% c("Line1","DB","Hblood","blood_new","Abortus")) %>% 
@@ -408,8 +392,7 @@ df_sig %>%
 
 
 
-  ### Fig1g. hypermutated ----------------------
-  
+### Fig1f. hypermutated ----------------------
   
   mito_genes <- as_tibble(read.table("/home/users/kimin/projects/12_MT/00_reference/mito_genes.bed", col.names = c("chrom","start","end","gene","dummy","strand","type"), colClasses = c("character","integer","integer","character","integer","character","character")))
   mito_genes$direction <- ifelse(mito_genes$strand == "+", 1, -1)
