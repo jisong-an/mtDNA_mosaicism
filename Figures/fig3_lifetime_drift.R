@@ -50,7 +50,6 @@ for (i in 1:length(pat_pos)){xaxis_pos[i+1]=sum(pat_pos[1:i])}
 xaxis_plot_pos = xaxis_pos/sum(pat_pos)
 
 grid.newpage()
-
 pushViewport(viewport(x=0,y=0, width=1,height=1,just=c('left','bottom')))
 
 
@@ -71,7 +70,7 @@ for (i in 1:length(pat_clone)){
 popViewport(3)
 
 
-# clone count [0.85-0.9]
+# clone 수 [0.85-0.9]
 pushViewport(viewport(x=0,y=0.85, height=0.05, just=c('left','bottom')))
 pushViewport(viewport(x=0.5, y=0.5, height=0.9, width=0.9))
 
@@ -283,7 +282,6 @@ cor.test(temp %>% filter(pseudoVAF>0.01) %>% pull(age),temp %>% filter(pseudoVAF
 
 
 
-
 ### Fig3f. branching time --------------------
 
 # 8th division = 3.8+1.2*7 ~= 12
@@ -307,7 +305,6 @@ df_tree_shared_length_vaf_uniq %>%
 
 
 
-
 ###Fig3g. turnover count to fixation (mitotic) -----------------------------------------------
 
 fixvaf_fixgen_df_mod_240122 %>% 
@@ -325,26 +322,10 @@ fixvaf_fixgen_df_mod_240122 %>%
 
 
 
-### Fig3h. compare results of mitotic & homeostatic turnover model --------------------------
-
-fixvaf_fixgen_df_mod_240122 %>% 
-  filter(mtCN==750) %>% 
-  filter(fixVAF==1) %>% 
-  select(fixVAF,meanGen,initVAF,mtCN,model) %>% 
-  spread(key="model",value=meanGen) %>% 
-  ggplot(aes(x=model2,y=model1)) + 
-  geom_point() + 
-  geom_smooth()
-
-
-
-### Fig3i. turnover rate inference in two models --------------------------------------------
-
+### Fig3h. turnover rate inference in two models --------------------------------------------
 
 # mitotic turnover
-
 load("~/R/R_script/11_Clone_MT/simul_fe_fixvaf_mle_result.240125.RData")
-
 
 res_mle_fixvaf_mod2 <- fixvaf_merge_sample_mod_240125 %>%
   mutate(group=paste0(patient,":",VAR)) %>% group_by(group) %>% 
@@ -355,7 +336,6 @@ res_mle_fixvaf_mod2 <- fixvaf_merge_sample_mod_240125 %>%
   mutate(group2=paste0(age,":",patient,":",VAR)) %>%
   select(-gen_yr,-distance) %>% unique() %>% 
   filter(age>1)
-
 
 # graph
 pat_pos <- res_mle_fixvaf_mod2 %>% arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age)%>% select(patient) %>% group_by(patient) %>% mutate(n=n()) %>% ungroup() %>% unique() %>% pull(n)
@@ -406,8 +386,6 @@ grid.segments(x0=0,x1=1, y0=c(0.125,0.25,0.375,0.5,0.625,0.75,0.875), y1=c(0.125
 grid.segments(x0=xaxis_plot_pos[c(9,15)], x1=xaxis_plot_pos[c(9,15)],y0=0,y1=1, gp=gpar(color="gray60", fill=FALSE, lwd=0.5))
 
 
-
-
 gt <- res_mle_fixvaf_mod2 %>% mutate(group=paste0(tissue,":",age)) %>% 
   ggplot() + 
   geom_errorbar(aes(x=factor(group2,levels=c(res_mle_fixvaf_mod1 %>% arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age) %>% pull(group2))),
@@ -426,9 +404,7 @@ popViewport(2)
 
 
 # homeostatic turnover
-
 load("~/R/R_script/11_Clone_MT/simul_fe_fixvaf_mle_result.mod1.240126.RData")
-
 
 res_mle_fixvaf_mod1 <- fixvaf_merge_sample_mod_240126 %>%
   mutate(group=paste0(patient,":",VAR)) %>% group_by(group) %>% 
@@ -439,7 +415,6 @@ res_mle_fixvaf_mod1 <- fixvaf_merge_sample_mod_240126 %>%
   mutate(group2=paste0(age,":",patient,":",VAR)) %>%
   select(-gen_yr,-distance) %>% unique() %>% 
   filter(age>1)
-
 
 # graph
 pat_pos <- res_mle_fixvaf_mod1 %>% arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age)%>% select(patient) %>% group_by(patient) %>% mutate(n=n()) %>% ungroup() %>% unique() %>% pull(n)
@@ -490,8 +465,6 @@ grid.segments(x0=0,x1=1, y0=c(0.125,0.25,0.375,0.5,0.625,0.75,0.875), y1=c(0.125
 grid.segments(x0=xaxis_plot_pos[c(9,15)], x1=xaxis_plot_pos[c(9,15)],y0=0,y1=1, gp=gpar(color="gray60", fill=FALSE, lwd=0.5))
 
 
-
-
 gt <- res_mle_fixvaf_mod1 %>% mutate(group=paste0(tissue,":",age)) %>% 
   ggplot() + 
   geom_errorbar(aes(x=factor(group2,levels=c(res_mle_fixvaf_mod1 %>% arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age) %>% pull(group2))),
@@ -507,6 +480,3 @@ g <- ggplotGrob(gt)
 grid.draw(g)
 
 popViewport(2)
-
-
-
