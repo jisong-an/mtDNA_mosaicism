@@ -1,6 +1,6 @@
 ################################
 #
-#   Figure 4 -sporadic mutation
+#   Figure 4 -post-zygotic mutation
 #
 #   Jisong An
 #   jisong0415@kaist.ac.kr
@@ -179,6 +179,7 @@ pushViewport(viewport(x=0, y=0, width=1, height=1, just=c('left','bottom')))
 # to determine the column order of heatmap (sample)
 sample_order <- fortify(tree) %>% merge(meta_dt %>% dplyr::rename("label"=lineage_id), by=c("label"), all.x = TRUE) %>% as_tibble() %>% filter(!is.na(sample_id)) %>% arrange(y) %>% pull(sample_id)
 
+
 pushViewport(viewport(x=0,y=0.35, height=0.15, just=c('left','bottom')))
 pushViewport(viewport(x=0.5, y=0.5, height=0.9, width=0.9))
 grid.rect(gp=gpar(lty="solid", fill=FALSE))
@@ -202,7 +203,6 @@ g <- ggplotGrob(gt)
 grid.draw(g)
 
 popViewport(2)
-
 
 
 
@@ -270,17 +270,15 @@ uv_df %>%
 
 
 
-
 ### Fig4f. mutation rate estimation ---------------------------
 
   ## mitotic turnover 
-  
   load("~/R/R_script/11_Clone_MT/simul_result_mrate_mod2_parse_240130.RData")
+
   mrate_dist_merge_240129_mod2_v2_uniq_mod <- mrate_dist_merge_240129_mod2_v2_uniq %>% 
     mutate(across(age,~replace(.,is.na(.),0)), across(tissue,~replace(.,is.na(.),"colon"))) %>% 
     arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age) %>% ungroup() %>% 
     mutate(num=row_number()) 
-  
   
   # graph
   pat_pos <- seq(1,nrow(mrate_dist_merge_240129_mod2_v2_uniq_mod))
@@ -321,8 +319,8 @@ uv_df %>%
   
 
   ## homeostatic turnover
-
   load("~/R/R_script/11_Clone_MT/simul_result_mrate_mod1_parse_240129.RData")
+
   mrate_dist_merge_240128_mod1_v2_uniq_mod <- mrate_dist_merge_240128_mod1_v2_uniq %>% 
     mutate(across(age,~replace(.,is.na(.),0)), across(tissue,~replace(.,is.na(.),"colon"))) %>% 
     arrange(factor(tissue,levels=c("colon","fibroblast","blood")),age) %>% ungroup() %>% 
@@ -365,4 +363,3 @@ uv_df %>%
   grid.draw(g)
   
   popViewport(2)
-  
