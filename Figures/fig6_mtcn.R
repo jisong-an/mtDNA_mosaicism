@@ -30,7 +30,6 @@ sample_info_final_v3 %>% filter(project %in% c("Line1","DB","Hblood","blood_new"
   theme_classic() + 
   theme(legend.position = "none", axis.text.x = element_blank(), strip.background = element_blank(), strip.text = element_text(size=10, colour="black"), axis.ticks.x = element_blank(), axis.title.x = element_blank(), panel.spacing = unit(0.2,"lines")) 
 
-
 mtcn_df <- sample_info_final_v3 %>% 
   filter(project %in% c("Line1","DB","Hblood","blood_new","Abortus")) %>% 
   filter(type=="clonal_normal") %>% 
@@ -101,7 +100,6 @@ for (i in 1:length(pat_pos)){
   grid.segments(x0=xaxis_sub_pos[5],x1=xaxis_sub_pos[clone_n-5], y0=y_value2[i], y1=y_value2[i], gp=gpar(col="red", fill=FALSE, lwd=1))
   grid.text(x = (xaxis_plot_pos[i]+xaxis_plot_pos[i+1])/2, y=-0.04, label = pat_name[i], gp=gpar(fontsize=7), rot=30)
   
-  
 }
 
 popViewport(3)
@@ -170,7 +168,6 @@ genes <- ggplot(mito_genes, aes(xmin=start, xmax=end, y=chrom, fill=type, label=
 
 
 
-
 ### Fig6c. colon cancer & normal mutation (count) ------------------------------
 
 colon_type_mut <- df %>% 
@@ -223,9 +220,7 @@ wilcox.test(temp %>% filter(type=="tumor") %>% pull(mean_n),
 
 
 
-
-### Fig6d. colon cancer & normal mutation (sumVAF) ------------------------------
-
+### Fig6d. colon cancer & normal mutation (Svaf) ------------------------------
 
 colon_type_mut <- df %>% 
   filter(tissue2=="colon") %>% 
@@ -245,7 +240,7 @@ colon_type_mut <- df %>%
   mutate(across(n,~replace(.,is.na(.),0)), across(sumVAF,~replace(.,is.na(.),0)), across(maxVAF, ~replace(.,is.na(.),0)))
 
 
-# average sum VAF
+# mean Svaf
 colon_type_mut %>% 
   group_by(project,patient,age,type) %>%
   summarise(mean_sumvaf=mean(sumVAF), sd_sumvaf=sd(sumVAF),n=n()) %>% 
@@ -278,30 +273,7 @@ wilcox.test(temp %>% filter(type=="tumor") %>% pull(mean_sumvaf),
 
 
 
-
-### Fig6e. MUTYH VAF -----------------------------------------------------
-
-df %>% filter(patient=="HC22")%>% 
-  filter(vartype_2!="frequent_recurrent") %>% 
-  filter(type=="adenoma") %>% 
-  filter(vartype!="fe") %>% 
-  filter(!is.na(VAR)) %>% 
-  merge(sample_info_final_v3 %>% 
-          filter(patient =="HC22") %>% 
-          filter(type=="adenoma") %>% select(patient,sample,age,tissue2), by=c("patient","sample","age","tissue2"), all=TRUE) %>% 
-  as_tibble() %>% 
-  mutate(across(VAF, ~replace(., is.na(.), 0))) %>%  
-  mutate(group=ifelse(sample %in% c("HC22-04","HC22-08","HC22-10","HC22-12"),"ARID1A", ifelse(sample %in% c("HC22-09","HC22-11"), "KRAS", ifelse(sample %in% c("HC22-03","HC22-05","HC22-01","HC22-06"), "APC", "no_driver")))) %>% 
-  group_by(sample,group)%>% 
-  summarise(max=max(VAF, na.rm=TRUE)) %>% 
-  ggplot(aes(x=sample,y=max))+
-  geom_bar(aes(fill=group),stat="identity") + 
-  geom_text(aes(label=max),vjust=-0.5) + facet_wrap(~group, scales = "free_x")
-
-
-
-
-### Fig6f. truncating mutation between turmo & normal ----------------------
+### Fig6e. truncating mutation between turmo & normal ----------------------
 
   df %>% 
     filter(project %in% c("Line1","DB","Hblood","blood_new","Abortus")) %>% 
@@ -333,7 +305,7 @@ df %>% filter(patient=="HC22")%>%
 
 
 
-### Fig6g. colon tumor & normal mtCN ---------------------------------------
+### Fig6f. colon tumor & normal mtCN ---------------------------------------
 
 mtcn_df_diploid <- sample_info_final_v3 %>% 
   filter(project=="Line1") %>% 
@@ -353,8 +325,7 @@ ggplot(data=subset(mtcn_df_diploid, type=="clonal_normal"), aes(x=factor(patient
 
 
 
-
-### Fig 6h. tumor cell fraction-tumor mtCN ---------------------------------------------
+### Fig 6g. tumor cell fraction-tumor mtCN ---------------------------------------------
 
 tumor_cninfo <- read_tsv("~/project/11_Clone_MT/info/01_Line1/tumor_CN_info.tsv") 
 mtcn_df_diploid_purity <- mtcn_df_diploid %>% 
@@ -376,64 +347,5 @@ cor.test(mtcn_df_diploid_purity$purity, mtcn_df_diploid_purity$mtCN)  # pval = 0
 lm_fit <- lm(mtCN~purity, data=mtcn_df_diploid_purity)
 summary(lm_fit)  
 
-# mtcn = 211.7 + 1053.9*purity
+# =mtcn = 211.7 + 1053.9*purity
 # purity=1; mtcn = 1265.6
-
-
-
-## Fig 6i. crc-Tcell mtCN --------------------
-  
-  t_cell_cn %>% 
-    filter(grepl("NKD",sample)) %>% 
-    mutate(group="T cell") %>% 
-    rbind(crc_organoid_cn %>% 
-            mutate(mtCN=mtDNA_depth/nDNA_depth*2) %>% 
-            select(sample,nDNA_depth,mtDNA_depth,mtCN) %>% mutate(group="CRC")) %>% 
-    rbind(sample_info_final_v3 %>% 
-            filter(project %in% c("Line1","Abortus")) %>% 
-            filter(type=="clonal_normal") %>% 
-            select(sample,nDNA_depth,mtDNA_depth,mtCN) %>% 
-            mutate(group="normal_clone")) %>% 
-    ggplot(aes(x=factor(group, levels=c("T cell","normal_clone","CRC")),y=mtCN)) + 
-    geom_jitter(aes(col=group),width=0.1) + 
-    geom_boxplot(alpha=0)+
-    theme_classic() + 
-    scale_color_manual(values = c("#B83535", pal_mt[[1]], "orange")) + 
-    xlab("")
-  
-  mtcn_all <- t_cell_cn %>% 
-    filter(grepl("NKD",sample)) %>% 
-    mutate(group="T cell") %>% 
-    rbind(crc_organoid_cn %>% 
-            mutate(mtCN=mtDNA_depth/nDNA_depth*2) %>% 
-            select(sample,nDNA_depth,mtDNA_depth,mtCN) %>% mutate(group="CRC")) %>% 
-    rbind(sample_info_final_v3 %>% 
-            filter(project %in% c("Line1","Abortus")) %>% 
-            filter(type=="clonal_normal") %>% 
-            select(sample,nDNA_depth,mtDNA_depth,mtCN) %>% 
-            mutate(group="normal_clone"))
-  
-  
-  # pval=0.00285
-  wilcox.test(mtcn_all %>% filter(group=="T cell") %>% pull(mtCN), mtcn_all %>% filter(group=="normal_clone") %>% pull(mtCN))
-  # pval=8.13*e-09
-  wilcox.test(mtcn_all %>% filter(group=="normal_clone") %>% pull(mtCN), mtcn_all %>% filter(group=="CRC") %>% pull(mtCN))
-
-
-
-  
-### Fig 6j. immune-tumor mtCN ---------------------------------------------
-
-tumor_slide <- read_tsv("/home/users/anjisong/project/11_Clone_MT/info/01_Line1/tumor_slide_review.tsv")
-tumor_slide <- tumor_slide %>% mutate(patient=KAIST_ID, sample=paste0(KAIST_ID,"_tumor")) %>% select(patient,sample,CD3_epithelium,CD3_stroma,CD8_epithelium,CD8_stroma,Purity,Note)
-
-tumor_slide_mod_diploid <- mtcn_df_diploid_purity %>% merge(tumor_slide,by=c("patient","sample")) %>% as_tibble()
-
-
-tumor_slide_mod_diploid  %>% 
-  gather(CD3_epithelium:CD8_stroma,key="type",value="n") %>% 
-  filter(type %in% c("CD3_epithelium")) %>% 
-  ggplot() + 
-  geom_point(aes(x=mtCN,y=n,col=purity),size=2) + 
-  scale_color_viridis(direction=-1) + 
-  theme_classic()
